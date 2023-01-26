@@ -44,9 +44,9 @@ def do_sign(message, key):
     digest = SHA256.new(message)
     return signer.sign(digest)
 
-def decrypt():
+def decrypt(req):
 
-    server_response = json.loads(os.environ.get('RESPONSE'))
+    server_response = json.loads(req)
 
     content = None
     sign = None
