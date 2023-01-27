@@ -14,7 +14,7 @@ if __name__ == '__main__':
     curr = QueryCurrRegionHttpRsp_pb2.QueryCurrRegionHttpRsp.FromString(output)
 
     for i in parseList:
-        url = f"https://autopatchhk.yuanshen.com/client_design_data/{curr.region_info.resource_url_bak}/output_{curr.region_info.client_data_version}_{curr.region_info.client_version_suffix}/client/General/AssetBundles/blocks/{i}.blk"
+        url = f"{curr.region_info.data_url}/output_{curr.region_info.client_data_version}_{curr.region_info.client_version_suffix}/client/General/AssetBundles/blocks/{i}.blk"
     
         print(url)
 
