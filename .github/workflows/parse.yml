@@ -1,0 +1,42 @@
+name: Parse
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Clone YSRes
+        run: git clone https://github.com/paimooon/YSRes
+
+      - name: Do query
+        env:
+          URL: ${{ secrets.URL }}
+        run: |
+          python -m pip install pycryptodome requests protobuf==3.19.1
+          python main.py
+
+      - name: Move blks
+        run: |
+          rm -r ./YSRes/blk
+          mv ./blk/ ./YSRes/blk
+          
+      - name: Parse blks
+        run: |
+          cd YSRes
+          python -m pip install kaitaistruct XlsxWriter
+          python prepare.py
+          python main.py -t -l KR
+          python main.py -e
+          python main.py -o -i 10000079 -l KR -s
+          python main.py -o -i 10000080 -l KR -s
+          python main.py -w -i 12511 -l KR
+          python main.py -w -i 12418 -l KR
+          
+      - uses: actions/upload-artifact@v3
+        with:
+          name: output
+          path: ${{github.workspace}}/YSRes/res/
