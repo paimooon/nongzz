@@ -36,7 +36,7 @@ if __name__ == '__main__':
         with open("./blk/" + i.split("/")[1] + ".blk", "wb") as file:
             file.write(requests.get(url).content)
     
-    url = f"{curr.region_info.resource_url}/output_{curr.region_info.res_version_config.version}_{curr.region_info.res_version_config.version_suffix}/client/StandaloneWindows64/AssetBundles/blocks/31049740.blk"
+    url = f"{curr.region_info.resource_url}/output_{curr.region_info.res_version_config.version}_{curr.region_info.res_version_config.version_suffix}/client/StandaloneWindows64/AssetBundles/blocks/00/31049740.blk"
     
     print(url)  
 
