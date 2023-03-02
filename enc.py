@@ -28,28 +28,13 @@ def get_key_from_xml(s, params):
     params = get_params_from_xml(xml, params)
     return RSA.construct( params )
 
-def get_pub_key_from_xml(s):
-    return get_key_from_xml(s, ['Modulus', 'Exponent'])
-
 def get_priv_key_from_xml(s):
     return get_key_from_xml(s, ['Modulus', 'Exponent', 'D', 'P', 'Q'])
 
-def verify(message, sign, key):
-    signer = pkcs1_15.new(key)
-    digest = SHA256.new(message)
-    signer.verify(digest, sign) # Throws an exception in the case of invalid signature
-
-def do_sign(message, key):
-    signer = pkcs1_15.new(key)
-    digest = SHA256.new(message)
-    return signer.sign(digest)
-
 def decrypt(req):
-
     server_response = json.loads(req)
 
     content = None
-    sign = None
 
     keys = {
         "5": {
@@ -60,15 +45,11 @@ def decrypt(req):
         }
     }
 
-    public_key_xml = keys["4"]['publicRSAKey']
     private_key_xml = keys["4"]['privateRSAKey']
-    
-    pub_rsa_key = get_pub_key_from_xml(public_key_xml)
     priv_rsa_key = get_priv_key_from_xml(private_key_xml)
 
     try:
         content = base64.b64decode(server_response['content'])
-        sign = base64.b64decode(server_response['sign'])
 
     except Exception:
         print(f'\nAn error occured while parsing the input data: \n\n{traceback.format_exc()}')
