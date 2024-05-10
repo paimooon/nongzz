@@ -45,7 +45,7 @@ def decrypt(req):
         }
     }
 
-    private_key_xml = keys["4"]['privateRSAKey']
+    private_key_xml = keys['5']['privateRSAKey']
     priv_rsa_key = get_priv_key_from_xml(private_key_xml)
 
     try:
