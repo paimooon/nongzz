@@ -1,6 +1,47 @@
 import os, requests, base64
 import enc
 from proto import QueryCurrRegionHttpRsp_pb2
+from threading import Thread, Lock
+
+# Function to download a part of the file
+def download_chunk(url, start_byte, end_byte, chunk_num, output_file, lock):
+    headers = {'Range': f'bytes={start_byte}-{end_byte}'}
+    response = requests.get(url, headers=headers, stream=True)
+    with lock:
+        with open(output_file, 'r+b') as f:
+            f.seek(start_byte)
+            f.write(response.content)
+    print(f"Chunk {chunk_num} downloaded")
+
+# Function to get the file size
+def get_file_size(url):
+    response = requests.head(url)
+    return int(response.headers['Content-Length'])
+
+# Function to download file with multiple threads
+def multi_thread_download(url, output_file, num_threads=4):
+    file_size = get_file_size(url)
+    chunk_size = file_size // num_threads
+
+    # Initialize the output file
+    with open(output_file, 'wb') as f:
+        f.truncate(file_size)
+
+    threads = []
+    lock = Lock()
+
+    for i in range(num_threads):
+        start_byte = i * chunk_size
+        # Ensure the last chunk goes to the end of the file
+        end_byte = start_byte + chunk_size - 1 if i < num_threads - 1 else file_size - 1
+        thread = Thread(target=download_chunk, args=(url, start_byte, end_byte, i + 1, output_file, lock))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    print("Download completed")
 
 if __name__ == '__main__':
 
@@ -26,8 +67,6 @@ if __name__ == '__main__':
 
     output = base64.b64decode(enc.decrypt(requests.get(os.environ.get('URL')).text))
     curr = QueryCurrRegionHttpRsp_pb2.QueryCurrRegionHttpRsp.FromString(output)
-    target = curr.region_info.next_res_version_config
-    target = target if str(target) != '' else curr.region_info.res_version_config
 
     for i in parseList:
         url = f"{curr.region_info.data_url}/output_{curr.region_info.client_data_version}_{curr.region_info.client_version_suffix}/client/General/AssetBundles/blocks/{i}.blk"
@@ -35,14 +74,4 @@ if __name__ == '__main__':
         print(url)
 
         os.makedirs("./blk/", exist_ok=True)
-        with open("./blk/" + i.split("/")[1] + ".blk", "wb") as file:
-            file.write(requests.get(url).content)
-    
-    url = f"{curr.region_info.resource_url}/output_{target.version}_{target.version_suffix}/client/StandaloneWindows64/AssetBundles/blocks/00/31049740.blk"
-    
-    print(url)  
-
-    os.makedirs("./blk/", exist_ok=True)
-    with open("./blk/" + i.split("/")[1] + ".blk", "wb") as file:
-        file.write(requests.get(url).content)
-    
+        multi_thread_download(url, "./blk/" + i.split("/")[1] + ".blk", 16)
