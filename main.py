@@ -48,15 +48,27 @@ def multi_thread_download(url, output_file, num_threads=4):
     print("Download completed")
 
 
-def zzz_link_create(url, file_type, output_name):
+def zzz_link_create(url, file_type, output_name, base_revision=False):
     
     file_list = requests.get(url)
     file_list = json.loads(file_list.text)
 
-    with open(output_name, 'w') as f:
-        for i in file_list["files"]:
-            f.write(result[file_type]["base_url"] + "StandaloneWindows64/cn/" + i["remoteName"] + "\n")
-            f.write("  out=" + file_type + "/" + i["remoteName"] + "\n")
+    if base_revision:
+        url = url.replace("res_version", "base_revision")
+        base_file = requests.get(url)
+        base_file = base_file.text
+        base_url = f"https://autopatchcn.juequling.com/game_res/beta_live/output_{base_file}/client/"
+        
+        with open(output_name, 'w') as f:
+            for i in file_list["files"]:
+                f.write(base_url + "StandaloneWindows64/cn/" + i["remoteName"] + "\n")
+                f.write("  out=" + file_type + "/" + i["remoteName"] + "\n")
+
+    else:
+        with open(output_name, 'w') as f:
+            for i in file_list["files"]:
+                f.write(result[file_type]["base_url"] + "StandaloneWindows64/cn/" + i["remoteName"] + "\n")
+                f.write("  out=" + file_type + "/" + i["remoteName"] + "\n")
 
 
 if __name__ == '__main__':
@@ -99,7 +111,7 @@ if __name__ == '__main__':
     silence_url = result["silence_data"]["base_url"] + "StandaloneWindows64/cn/silence_version"
 
     zzz_link_create(design_url, "design_data", "data.txt")
-    zzz_link_create(res_url, "game_res", "res.txt")
+    zzz_link_create(res_url, "game_res", "res.txt", base_revision=True)
     zzz_link_create(silence_url, "silence_data", "silence.txt")
 
 
