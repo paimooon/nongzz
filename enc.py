@@ -29,7 +29,7 @@ def get_key_from_xml(s, params):
     return RSA.construct( params )
 
 def get_priv_key_from_xml(s):
-    return get_key_from_xml(s, ['Modulus', 'Exponent', 'D', 'P', 'Q'])
+    return get_key_from_xml(s, ['Modulus', 'Exponent']) # , 'D', 'P', 'Q'
 
 def decrypt(req):
     server_response = json.loads(req)
@@ -42,11 +42,17 @@ def decrypt(req):
         },
         "4": {
             "privateRSAKey": "<RSAKeyValue><Modulus>yaxqjPJP5+Innfv5IdfQqY/ftS++lnDRe3EczNkIjESWXhHSOljEw9b9C+/BtF+fO9QZL7Z742y06eIdvsMPQKdGflB26+9OZ8AF4SpXDn3aVWGr8+9qpB7BELRZI/Ph2FlFL4cobCzMHunncW8zTfMId48+fgHkAzCjRl5rC6XT0Yge6+eKpXmF+hr0vGYWiTzqPzTABl44WZo3rw0yurZTzkrmRE4kR2VzkjY/rBnQAbFKKFUKsUozjCXvSag4l461wDkhmmyivpNkK5cAxuDbsmC39iqagMt9438fajLVvYOvpVs9ci5tiLcbBtfB4Rf/QVAkqtTm86Z0O3e7Dw==</Modulus><Exponent>AQAB</Exponent><P>/auFx84D7UlrfuFQcp5t+n2sex7Hj6kbK3cp27tZ2o6fix7GbJoG6IdBxRyE8NWVr+u5BnbT7wseDMEOjSbyxjuCl/vXlRX01JUhEPTC7bpIpGSU4XMngcE7BT2EEYtKdFQnPK9WW3k7sT2EC/rVIKu9YERyjDZico1AvC+MxUk=</P><Q>y4ahJvcD+6Wq2nbOnFUByVh79tIi1llM5RY/pVviE6IfEgnSfUf1qnqCs5iQn9ifiCDJjMqb+egXXBc/tGP/E5qGe8yTOEZ2Y5pu8T0sfkfBBNbEEFZORnOAFti1uD4nkxNwqolrJyFJGMmP7Ff533Su2VK79zbtyGVJEoAddZc=</Q><DP>FTcIHDq9l1XBmL3tRXi8h+uExlM/q2MgM5VmucrEbAPrke4D+Ec1drMBLCQDdkTWnPzg34qGlQJgA/8NYX61ZSDK/j0AvaY1cKX8OvfNaaZftuf2j5ha4H4xmnGXnwQAORRkp62eUk4kUOFtLrdOpcnXL7rpvZI6z4vCszpi0ok=</DP><DQ>p3lZEl8g/+oK9UneKfYpSi1tlGTGFevVwozUQpWhKta1CnraogycsnOtKWvZVi9C1xljwF7YioPY9QaMfTvroY3+K9DjM+OHd96UfB4Chsc0pW60V10te/t+403f+oPqvLO6ehop+kEBjUwPCkQ6cQ3q8xmJYpvofoYZ4wdZNnE=</DQ><InverseQ>cBvFa7+2fpF/WbodRb3EaGOe22C1NHFlvdkgNzb4vKWTiBGix60Mmab72iyInEdZvfirDgJoou67tMy+yrKxlvuZooELGg4uIM2oSkKWnf0ezCyovy+d62JqNGmSgESx1vNhm6JkNM8XUaKPb2qnxjaV5Mcsrd5Nxhg7p5q7JGM=</InverseQ><D>spmttur01t+SxDec11rgIPoYXMZOm76H1jFDFyrxhf9Lxz0zF5b7kpA3gzWuLwYr53kbYQTTzIG96g7k1sa6IEDDjiPGXYWNwxXsXw73EA9mpwybkqkpoPTXd+qvssZN8SKFweSJaNt3Xb05yVx4bATaL7+80Sztd+HABxag6Cs7eRBB63tLJFHJ+h4xznpOnOd476Sq+S0q64sMeYDLmP+2UiFA6PVhmO9Km0BRmOmzpV/cfLjY3BRfu0s7RFUPr4Sf/uxL8Kmia8rMHqNJfdUyjPVmjLsKLnCnnHlVrspxMOhhk8PFEy7ZbXpCxnum0vGMWPH1cJypE0cCWMACUQ==</D></RSAKeyValue>"
+        },
+        "zzz": {
+            "privateRSAKey": "<RSAKeyValue><Exponent>AQAB</Exponent><Modulus>rkQoCtGS5YSrzxm89Wq3GSR/uw5AJDwGqu+tkXViZwOF8H6xgL7KPi2OVATHCoaNFLTAD5nlLSjg0pHEAqHafvXtzj4Gh8tvF2A6/8yB5ceT3Oszo9UR5d7hsI55sxb37QUpQLHYoxKs79FohJ74Z5V2LgSY+0XvbGxMHxhxHTc=</Modulus></RSAKeyValue>"
         }
     }
 
-    private_key_xml = keys['5']['privateRSAKey']
-    priv_rsa_key = get_priv_key_from_xml(private_key_xml)
+    f = open('zzz.pem', 'rb')
+    zzz_key = RSA.importKey(f.read())
+
+    private_key_xml = keys['4']['privateRSAKey']
+    priv_rsa_key = zzz_key  #get_priv_key_from_xml(private_key_xml)
 
     try:
         content = base64.b64decode(server_response['content'])
@@ -57,7 +63,7 @@ def decrypt(req):
     if content:
         dec = PKCS1_v1_5.new(priv_rsa_key)
 
-        chunk_size = 256
+        chunk_size = 128
 
         out = b''
 

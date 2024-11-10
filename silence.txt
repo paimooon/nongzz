@@ -1,0 +1,4 @@
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client_silence/StandaloneWindows64/cn/Blocks/3496302042.blk
+  out=silence_data/Blocks/3496302042.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client_silence/StandaloneWindows64/cn/Blocks/1688854445.blk
+  out=silence_data/Blocks/1688854445.blk

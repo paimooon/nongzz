@@ -1,0 +1,22 @@
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/786673528.blk
+  out=design_data/Blocks/786673528.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/564802878.blk
+  out=design_data/Blocks/564802878.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/314286741.blk
+  out=design_data/Blocks/314286741.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/1092575898.blk
+  out=design_data/Blocks/1092575898.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/2689000079.blk
+  out=design_data/Blocks/2689000079.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/4163126367.blk
+  out=design_data/Blocks/4163126367.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/2251674070.blk
+  out=design_data/Blocks/2251674070.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/607930378.blk
+  out=design_data/Blocks/607930378.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/4146693958.blk
+  out=design_data/Blocks/4146693958.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/2388337555.blk
+  out=design_data/Blocks/2388337555.blk
+https://autopatchcn.juequling.com/design_data/beta_live/output_4995426_0192a10749/client/StandaloneWindows64/cn/Blocks/1584573291.blk
+  out=design_data/Blocks/1584573291.blk
